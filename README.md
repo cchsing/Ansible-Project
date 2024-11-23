@@ -17,3 +17,19 @@ ansible all --list-hosts
 ansible all -m gather_facts
 ansible all -m gather_facts --limit <ipAddress>
 ```
+
+## Elevate sudo
+```bash
+ansible all -m apt -a update_cache=true --become --ask-become-pass
+ansible all -m apt -a name=vim-nox --become --ask-become-pass
+ansible all -m apt -a "name=snapd state=latest" --become --ask-become-pass
+ansible all -m apt -a "upgrade=dist" --become --ask-become-pass
+```
+
+## Ansible Playbooks
+```bash
+ansible-playbook --ask-become-pass ./playbooks/install_apache.yaml
+```
+
+## References
+- "Getting started with Ansible" https://www.youtube.com/watch?v=4REljLsOnXk&list=PLT98CRl2KxKEUHie1m24-wkyHpEsa4Y70
