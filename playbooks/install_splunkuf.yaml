@@ -1,0 +1,26 @@
+
+
+
+# Download the Installer
+
+
+# Prechecks
+## Check the existence of splunkd service
+## Check the availability of port
+
+
+# Installation
+
+
+# First start of splunkd service
+
+# Configuration
+## Stop splunkd service
+## Create administrator credential
+## Enable Boot Start
+## Update deploymentclient.conf
+## Disable management port 8089 
+## Start splunkd service
+
+# Cleanup
+## Delete installer file
