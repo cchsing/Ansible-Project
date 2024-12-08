@@ -29,6 +29,8 @@ ansible all -m apt -a "upgrade=dist" --become --ask-become-pass
 ## Ansible Playbooks
 ```bash
 ansible-playbook --ask-become-pass ./playbooks/install_apache.yaml
+ansible-playbook --ask-become-pass ./playbooks/uninstall_apache.yaml
+
 ```
 
 ## References
