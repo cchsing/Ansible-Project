@@ -2,13 +2,14 @@
 
 - hosts: all
   become: true
-  tasks: 
+  pre_tasks: 
 
   - name: Install Updates (CentOS)
     dnf: 
       update_only: yes
       update_cache: yes
     when: ansible_distribution == "CentOS"
+
   - name: Install Updates (Ubuntu)
     apt:
       upgrade: dist
@@ -19,21 +20,31 @@
   become: true
   tasks: 
 
-  - name: Install Apache and PHP
-    package: 
+  - name: Install Apache and PHP (Ubuntu)
+    apt: 
       name: 
-        - "{{ apache_package }}"
-        - "{{ php_package }}"
+        - apache2
+        - libapache2-mod-php
       state: latest
       update_cache: yes
+    when: ansible_distribution == "Ubuntu"
 
 - hosts: db_servers
   become: true
   tasks:
   
-  - name: Install PostgreSQL
-    package:
-      name:
-        - "{{ postgresql_package }}"
+  - name: Install PostgreSQL (CentOS)
+    dnf:
+      name: postgresql-server
       state: latest
       update_cache: yes
+    when: ansible_distribution == "CentOS"
+
+- hosts: file_servers
+  become: true
+  tasks:
+
+  - name: install samba package
+    package: 
+      name: samba
+      state: latest

@@ -1,0 +1,11 @@
+---
+
+- hosts: all
+  become: true
+  tasks: 
+
+  - name: Uninstall PostgreSQL
+    package: 
+      name: 
+        - "{{ postgresql_package }}"
+      state: absent
