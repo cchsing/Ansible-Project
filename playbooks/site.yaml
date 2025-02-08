@@ -5,12 +5,14 @@
   pre_tasks: 
 
   - name: Install Updates (CentOS)
+    tags: always
     dnf: 
       update_only: yes
       update_cache: yes
     when: ansible_distribution == "CentOS"
 
   - name: Install Updates (Ubuntu)
+    tags: always
     apt:
       upgrade: dist
       update_cache: yes
@@ -20,21 +22,50 @@
   become: true
   tasks: 
 
-  - name: Install Apache and PHP
-    package: 
+  - name: Install Apache and PHP for Ubuntu Servers
+    tags: apache,apache2,ubuntu
+    apt: 
       name: 
-        - "{{ apache_package }}"
-        - "{{ php_package }}"
+        - apache2
+        - libapache2-mod-php
       state: latest
       update_cache: yes
+    when: ansible_distribution == "Ubuntu"
+
+  - name: Install Apache and PHP for CentOS Servers
+    tags: apache,centos,httpd
+    dnf:
+      name:
+        - httpd
+        - php
+      state: latest
+      update_cache: yes
+    when: ansible_distribution == "CentOS"
 
 - hosts: db_servers
   become: true
   tasks:
-  
-  - name: Install PostgreSQL
-    package:
-      name:
-        - "{{ postgresql_package }}"
+
+  - name: Install MariaDB for Ubuntu Servers
+    tags: ubuntu,db,mariadb
+    apt:
+      name: mariadb-server
       state: latest
-      update_cache: yes
+    when: ansible_distribution == "Ubuntu"
+  
+  - name: Install MariaDB for CentOS Servers
+    tags: centos,db,mariadb
+    dnf: 
+      name: mariadb
+      state: latest
+    when: ansible_distribution == "CentOS"
+
+- hosts: file_servers
+  become: true
+  tasks: 
+
+  - name: Install Samba Package
+    tags: samba
+    package:
+      name: samba
+      state: latest
